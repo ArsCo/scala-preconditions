@@ -1,2 +1,12 @@
+# Target files
+target/
+
+# IDE and system files
+.idea/
+.DS_Store
+
+# Binary
 *.class
+
+# Logs
 *.log
