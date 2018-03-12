@@ -4,6 +4,7 @@ import ars.precondition.Messages._
 import ars.precondition.Predicates.BoundTypes.{Exclusive, Inclusive}
 import ars.precondition.Predicates._
 
+import scala.collection.Iterable
 import scala.math.Numeric
 import scala.util.matching.Regex
 
@@ -463,10 +464,47 @@ object RequireUtils {
     *
     * @param value the value
     * @param require the function
+    *
     * @tparam T the type of value
     */
   @inline def optional[T](value: Option[T])(require: T => Unit): Unit = {
     value.foreach(require)
   }
 
+
+  /**
+    * Tests that one and only one of elems of `seq` is contained in `value`
+    *
+    * @param value the value
+    * @param name the name to include in the failure message
+    * @param seq the sequence of values
+    * @param allowDups is allow duplicates
+    *
+    * @tparam T the type of value
+    */
+  @inline def requireOnlyOneOf[T](value: Iterable[T], name: String = NoNameParameter)
+                                 (seq: Iterable[T], allowDups: Boolean = false): Unit = {
+    require(
+      onlyOneOf(value, seq, allowDups),
+      mustContainOnlyOneOf(seq, name, allowDups)
+    )
+  }
+
+  /**
+    * Tests that at least one of elems of `seq` is contained in `value`
+    *
+    * @param value the value
+    * @param name the name to include in the failure message
+    * @param seq the sequence of values
+    * @param allowDups is allow duplicates
+    *
+    * @tparam T the type of value
+    */
+  @inline def requireAtLeastOneOf[T](value: Iterable[T], name: String = NoNameParameter)
+                                    (seq: Iterable[T], allowDups: Boolean = false): Unit = {
+    require(
+      atLeastOneOf(value, seq, allowDups),
+      mustContainAtLeastOneOf(seq, name, allowDups)
+    )
+  }
 }

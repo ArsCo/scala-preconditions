@@ -2,6 +2,7 @@ package ars.precondition
 
 import java.util.regex.Pattern
 
+import scala.collection.Iterable
 import scala.math.Numeric
 import scala.util.matching.Regex
 
@@ -78,6 +79,32 @@ object Predicates {
                       (leftBound: T, leftBoundType: BoundTypes.BoundType = BoundTypes.Inclusive)
                       (rightBound: T, rightBoundType: BoundTypes.BoundType = BoundTypes.Exclusive): Boolean = {
     isNumberFrom(value)(leftBound, leftBoundType) && isNumberUntil(value)(rightBound, rightBoundType)
+  }
+
+  def onlyOneOf[T](value: Iterable[T], seq: Iterable[T], allowDups: Boolean = false): Boolean = {
+    val valueSet = value.toSet
+    val seqSet = seq.toSet
+    val intersection = seqSet.intersect(valueSet)
+
+    val isContains = intersection.size == 1
+    if (!isContains) return false
+
+    val isDupsCorrect = if (allowDups) true else value.count(_ == intersection.head) == 1
+    isDupsCorrect
+  }
+
+  def atLeastOneOf[T](value: Iterable[T], seq: Iterable[T], allowDups: Boolean = false): Boolean = {
+    val valueSet = value.toSet
+    val seqSet = seq.toSet
+    val intersection = seqSet.intersect(valueSet)
+    val isContains = intersection.nonEmpty
+    if (!isContains) return false
+
+    val isDupsCorrect =
+      if (allowDups) true
+      else intersection.map(i => value.count(_ == i)).forall(_ == 1)
+
+    isDupsCorrect
   }
 
 }

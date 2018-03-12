@@ -84,4 +84,14 @@ object Messages {
 
     mustSatisfy(name, s"$rightBound $operator $value", value)
   }
+
+  def mustContainOnlyOneOf[T](seq: Iterable[T], name: String, allowDups: Boolean): String = {
+    s"The parameter '$name' must contains one and only one of $seq (${dupsString(allowDups)})"
+  }
+
+  def mustContainAtLeastOneOf[T](seq: Iterable[T], name: String, allowDups: Boolean): String = {
+    s"The parameter '$name' must contains at least one of $seq (${dupsString(allowDups)})"
+  }
+
+  private def dupsString(allowDups: Boolean): String = s"with${if (!allowDups) "" else "out"}"
 }
