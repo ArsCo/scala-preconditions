@@ -1,5 +1,7 @@
 package ars.precondition
 
+import java.util.UUID
+
 import ars.precondition.Messages._
 import ars.precondition.Predicates.BoundTypes.{Exclusive, Inclusive}
 import ars.precondition.Predicates._
@@ -33,6 +35,7 @@ object RequireUtils {
     * Override this implementation if you want to intercept or change rules of building failure messages.
     *
     * @param message the source message
+    *
     * @return the failure message
     */
   @inline def failureMessage(message: => Any): String = prefix + message + postfix
@@ -91,6 +94,7 @@ object RequireUtils {
     *
     * @param value the iterable to test
     * @param name the name to include in the failure message
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireNotBlank[T](value: Iterable[T], name: String): Unit = {
@@ -101,6 +105,7 @@ object RequireUtils {
     * Tests that sequence `value` isn't `null` or empty, and otherwise throws `IllegalArgumentException`.
     *
     * @param value the iterable to test
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireNotBlank[T](value: Iterable[T]): Unit = {
@@ -257,7 +262,9 @@ object RequireUtils {
     * Default implementation concatenates name and index in string `name(index)`.
     *
     * @param f the function to translate
+    *
     * @tparam T the type of iterable elements
+    *
     * @return the translated function
     */
   @inline def toRequireElementFunction[T](f: RequireFunction[T]): RequireElementFunction[T] = {
@@ -271,6 +278,7 @@ object RequireUtils {
     * @param value the iterable value
     * @param name the name to include in the failure message
     * @param require the function
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireAll[T](value: Iterable[T], name: String = NoNameParameter)
@@ -288,6 +296,7 @@ object RequireUtils {
     *
     * @param value the iterable value
     * @param name the name to include in the failure message
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireAllNotNull[T <: AnyRef](value: Iterable[T], name: String = NoNameParameter): Unit = {
@@ -311,6 +320,7 @@ object RequireUtils {
     * @param value the iterable value
     * @param size the expected size
     * @param name the name to include in the failure message
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireSize[T](value: Iterable[T], size: Int, name: String = NoNameParameter): Unit = {
@@ -325,6 +335,7 @@ object RequireUtils {
     * @param from the minimum size value (inclusive)
     * @param until the maximum size value (exclusive)
     * @param name the name to include in the failure message
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireSizeInRange[T](value: Iterable[T], from: Int, until: Int, name: String = NoNameParameter): Unit = {
@@ -338,6 +349,7 @@ object RequireUtils {
     * @param value the iterable value
     * @param from the minimum size value (inclusive)
     * @param name the name to include in the failure message
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireSizeFrom[T](value: Iterable[T], from: Int, name: String = NoNameParameter): Unit = {
@@ -351,6 +363,7 @@ object RequireUtils {
     * @param value the iterable value
     * @param until the maximum size value (exclusive)
     * @param name the name to include in the failure message
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireSizeUntil[T](value: Iterable[T], until: Int, name: String = NoNameParameter): Unit = {
@@ -362,6 +375,7 @@ object RequireUtils {
     *
     * @param value the value
     * @param number the required number
+    *
     * @tparam T the type of iterable elements
     */
   @inline def requireNumber[@specialized T: Numeric](value: T, name: String = NoNameParameter)(number: T): Unit = {
@@ -375,6 +389,7 @@ object RequireUtils {
     * @param value the value
     * @param leftBound the left bound
     * @param leftBoundType the left bound type
+    *
     * @tparam T the type of value
     */
   @inline def requireNumberFrom[@specialized T: Numeric]
@@ -391,6 +406,7 @@ object RequireUtils {
     * @param value the value
     * @param rightBound the right bound
     * @param rightBoundType the right bound type
+    *
     * @tparam T the type of value
     */
   @inline def requireNumberUntil[@specialized T: Numeric]
@@ -405,6 +421,7 @@ object RequireUtils {
     *
     * @param value the value
     * @param leftBound the left bound
+    *
     * @tparam T the type of value
     */
   @inline def requireNumberFromExclusive[@specialized T: Numeric]
@@ -421,6 +438,7 @@ object RequireUtils {
     * @param leftBoundType the left bound type
     * @param rightBound the right bound
     * @param rightBoundType the right bound type
+    *
     * @tparam T the type of value
     */
   @inline def requireNumberInRange[@specialized T: Numeric]
@@ -437,6 +455,7 @@ object RequireUtils {
     * @param value the value
     * @param leftBound the left bound
     * @param rightBound the right bound
+    *
     * @tparam T the type of value
     */
   @inline def requireNumberInterval[@specialized T: Numeric]
@@ -451,6 +470,7 @@ object RequireUtils {
     * @param value the value
     * @param leftBound the left bound
     * @param rightBound the right bound
+    *
     * @tparam T the type of value
     */
   @inline def requireNumberSegment[@specialized T: Numeric]
@@ -485,7 +505,7 @@ object RequireUtils {
   @inline def requireOnlyOneOf[T](value: Iterable[T], name: String = NoNameParameter)
                                  (seq: Iterable[T], allowDups: Boolean = false): Unit = {
     require(
-      onlyOneOf(value, seq, allowDups),
+      isOnlyOneOf(value, seq, allowDups),
       mustContainOnlyOneOf(seq, name, allowDups)
     )
   }
@@ -503,8 +523,30 @@ object RequireUtils {
   @inline def requireAtLeastOneOf[T](value: Iterable[T], name: String = NoNameParameter)
                                     (seq: Iterable[T], allowDups: Boolean = false): Unit = {
     require(
-      atLeastOneOf(value, seq, allowDups),
+      isAtLeastOneOf(value, seq, allowDups),
       mustContainAtLeastOneOf(seq, name, allowDups)
     )
   }
+
+  /**
+    * Tests that string `email` is a correct email address.
+    *
+    * @param email the testing email string
+    * @param name the name to include in the failure message
+    */
+  @inline def requireEmail(email: String, name: String = NoNameParameter): Unit = {
+    require(isCorrectEmail(email), mustBeCorrectEmail(email, name))
+  }
+
+  /**
+    * Tests that string `uuid` is a correct universally unique identifier (UUID).
+    *
+    * @param uuid the testing uuid string
+    * @param name the name to include in the failure message
+    */
+  @inline def requireUuid(uuid: String, name: String = NoNameParameter): Unit = {
+    require(isCorrectUuid(uuid),  mustBeCorrectUuid(uuid, name))
+  }
+
+
 }

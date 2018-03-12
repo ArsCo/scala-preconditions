@@ -14,43 +14,43 @@ class PredicatesTest extends AbstractBaseTest {
     val value = Seq("A", "F", "K", "N")
     val valueDups = Seq("A", "F", "K", "A")
 
-    assert(onlyOneOf(value, seq))
-    assert(onlyOneOf(value, seq, allowDups = false))
-    assert(onlyOneOf(valueDups, seq, allowDups = true))
+    assert(isOnlyOneOf(value, seq))
+    assert(isOnlyOneOf(value, seq, allowDups = false))
+    assert(isOnlyOneOf(valueDups, seq, allowDups = true))
   }
 
   it must "return `false` otherwise" in {
 
     assert(
-      !onlyOneOf(
+      !isOnlyOneOf(
         Seq(),
         Seq()
       )
     )
 
     assert(
-      !onlyOneOf(
+      !isOnlyOneOf(
         Seq("A"),
         Seq()
       )
     )
 
     assert(
-      !onlyOneOf(
+      !isOnlyOneOf(
         Seq(),
         Seq("F")
       )
     )
 
     assert(
-      !onlyOneOf(
+      !isOnlyOneOf(
         Seq("A", "F", "A"),
         Seq("A")
       )
     )
 
     assert(
-      !onlyOneOf(
+      !isOnlyOneOf(
         Seq(),
         Seq(),
         allowDups = true
@@ -58,7 +58,7 @@ class PredicatesTest extends AbstractBaseTest {
     )
 
     assert(
-      !onlyOneOf(
+      !isOnlyOneOf(
         Seq("A"),
         Seq(),
         allowDups = true
@@ -66,7 +66,7 @@ class PredicatesTest extends AbstractBaseTest {
     )
 
     assert(
-      !onlyOneOf(
+      !isOnlyOneOf(
         Seq(),
         Seq("F"),
         allowDups = true
@@ -83,39 +83,39 @@ class PredicatesTest extends AbstractBaseTest {
     val value2 = Seq("A", "F", "K", "B")
     val valueDups2 = Seq("A", "F", "K", "A", "B", "B")
 
-    assert(Predicates.atLeastOneOf(value, seq))
-    assert(Predicates.atLeastOneOf(value, seq, allowDups = false))
-    assert(Predicates.atLeastOneOf(valueDups, seq, allowDups = true))
+    assert(Predicates.isAtLeastOneOf(value, seq))
+    assert(Predicates.isAtLeastOneOf(value, seq, allowDups = false))
+    assert(Predicates.isAtLeastOneOf(valueDups, seq, allowDups = true))
 
-    assert(Predicates.atLeastOneOf(value2, seq2))
-    assert(Predicates.atLeastOneOf(value2, seq2, allowDups = false))
-    assert(Predicates.atLeastOneOf(valueDups2, seq2, allowDups = true))
+    assert(Predicates.isAtLeastOneOf(value2, seq2))
+    assert(Predicates.isAtLeastOneOf(value2, seq2, allowDups = false))
+    assert(Predicates.isAtLeastOneOf(valueDups2, seq2, allowDups = true))
   }
 
   it must "return `false` otherwise" in {
     assert(
-      !Predicates.atLeastOneOf(
+      !Predicates.isAtLeastOneOf(
         Seq(),
         Seq()
       )
     )
 
     assert(
-      !Predicates.atLeastOneOf(
+      !Predicates.isAtLeastOneOf(
         Seq("A"),
         Seq()
       )
     )
 
     assert(
-      !Predicates.atLeastOneOf(
+      !Predicates.isAtLeastOneOf(
         Seq(),
         Seq("F")
       )
     )
 
     assert(
-      !Predicates.atLeastOneOf(
+      !Predicates.isAtLeastOneOf(
         Seq(),
         Seq(),
         allowDups = true
@@ -123,7 +123,7 @@ class PredicatesTest extends AbstractBaseTest {
     )
 
     assert(
-      !Predicates.atLeastOneOf(
+      !Predicates.isAtLeastOneOf(
         Seq("A"),
         Seq(),
         allowDups = true
@@ -131,7 +131,7 @@ class PredicatesTest extends AbstractBaseTest {
     )
 
     assert(
-      !onlyOneOf(
+      !isOnlyOneOf(
         Seq(),
         Seq("F"),
         allowDups = true

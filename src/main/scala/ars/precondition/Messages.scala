@@ -23,12 +23,12 @@ object Messages {
     s"The parameter '$name' must match $restriction: '$value'."
   }
 
-  private def mustNotContains[T](name: String, restriction: String) = {
-    s"The parameter '$name' must not contains $restriction."
+  private def mustContain[T](name: String, restriction: String) = {
+    s"The parameter '$name' must contain $restriction."
   }
 
-  private def mustNotContains[T](name: String, restriction: String, value: T) = {
-    s"The parameter '$name' must not contains $restriction: '$value'."
+  private def mustNotContain[T](name: String, restriction: String, value: T) = {
+    s"The parameter '$name' must not contain $restriction: '$value'."
   }
 
   private def sizeMustBe[T](name: String, restriction: String, value: T) = {
@@ -86,12 +86,16 @@ object Messages {
   }
 
   def mustContainOnlyOneOf[T](seq: Iterable[T], name: String, allowDups: Boolean): String = {
-    s"The parameter '$name' must contains one and only one of $seq (${dupsString(allowDups)})"
+    mustContain(name, s"one and only one of $seq (${dupsString(allowDups)})")
   }
 
   def mustContainAtLeastOneOf[T](seq: Iterable[T], name: String, allowDups: Boolean): String = {
-    s"The parameter '$name' must contains at least one of $seq (${dupsString(allowDups)})"
+    mustContain(name, s"at least one of $seq (${dupsString(allowDups)})")
   }
 
   private def dupsString(allowDups: Boolean): String = s"with${if (!allowDups) "" else "out"}"
+
+  def mustBeCorrectEmail(value: String, name: String): String = mustBe(name, "correct email", value)
+
+  def mustBeCorrectUuid(value: String, name: String): String = mustBe(name, "correct UUID", value)
 }
