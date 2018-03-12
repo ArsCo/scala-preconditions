@@ -139,4 +139,27 @@ class PredicatesTest extends AbstractBaseTest {
     )
   }
 
+  "isCorrectEmail" must "return `true` if email is correct" in {
+    assert(isCorrectEmail("abcdef.sdf@ddfgw.ru"))
+    assert(isCorrectEmail("abcdef.sdf@ddfgw.tyyy.com"))
+    assert(isCorrectEmail("abcd234235@ddfgw.tyyy.com"))
+  }
+
+  it must "return `false` otherwise" in {
+    assert(!isCorrectEmail("abcd234235ddfgw.tyyy.com"))
+    assert(!isCorrectEmail("ABC234235@фываfgw.tyyy.com"))
+    assert(!isCorrectEmail("abcd234235@фываfgw.tyyy.com"))
+    assert(!isCorrectEmail(""))
+  }
+
+  "isCorrectUuid" must "validate guid format" in {
+    assert(isCorrectUuid("837ab383-6ab4-9273-38c3-274abc742932"))
+  }
+
+  it must "return `false` otherwise" in {
+    assert(!isCorrectUuid("837ab3836ab4-9273-38c3-274abc742932"))
+    assert(!isCorrectUuid("837ab38h-6ab4-9273-38c3-274abc742932"))
+    assert(!isCorrectUuid("837ab383-6ab4-9273-38c3-274abc742932d"))
+    assert(!isCorrectUuid(""))
+  }
 }

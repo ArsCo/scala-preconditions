@@ -1,7 +1,5 @@
 package ars.precondition
 
-import java.util.UUID
-
 import ars.precondition.Messages._
 import ars.precondition.Predicates.BoundTypes.{Exclusive, Inclusive}
 import ars.precondition.Predicates._
@@ -547,6 +545,5 @@ object RequireUtils {
   @inline def requireUuid(uuid: String, name: String = NoNameParameter): Unit = {
     require(isCorrectUuid(uuid),  mustBeCorrectUuid(uuid, name))
   }
-
 
 }
