@@ -2,6 +2,8 @@ organization := "ars-co"
 version := "0.0.3-SNAPSHOT"
 name := "scala-preconditions"
 
+crossScalaVersions := Seq("2.11.8", "2.12.2")
+
 scalaVersion := "2.11.8"
 
 // Logging
