@@ -1,4 +1,4 @@
-organization := "ars-co"
+organization := "ru.ars-co"
 version := "0.0.3-SNAPSHOT"
 name := "scala-preconditions"
 
