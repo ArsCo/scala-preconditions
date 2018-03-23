@@ -1,13 +1,13 @@
-organization := "ru.ars-co"
-version := "0.0.3-SNAPSHOT"
-name := "scala-preconditions"
+import sbt.Keys.{developers, libraryDependencies, scmInfo}
+import sbt.url
 
-crossScalaVersions := Seq("2.11.8", "2.12.2")
+lazy val commonSettings = Seq(
+  organization := "ru.ars-co",
+  version := "0.0.3", // + "-SNAPSHOT"
+  name := "scala-preconditions"
+)
 
-scalaVersion := "2.11.8"
-
-// Logging
-libraryDependencies ++= Seq(
+lazy val loggingDependencies = Seq(
   "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
   "org.slf4j" % "jcl-over-slf4j" % "1.7.21",
   "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.7",
@@ -15,38 +15,55 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.7"
 )
 
-// Testing
-libraryDependencies ++= Seq(
-  "org.scalactic" %% "scalactic" % "3.0.0" % "test",
-  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+lazy val testingDependencies = Seq(
+  "org.scalactic" %% "scalactic" % "3.0.0" % Test,
+  "org.scalatest" %% "scalatest" % "3.0.0" % Test
 )
 
-resolvers += DefaultMavenRepository
 
-javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
+lazy val root = (project in file("."))
+  .settings(
+    commonSettings,
 
-licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
+    scalaVersion := "2.11.8",
+    crossScalaVersions := Seq("2.11.8", "2.12.4"),
+    javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
 
-pomExtra :=
-  <url>https://github.com/ArsCo</url>
-    <licenses>
-      <license>
-        <name>Apache-2.0</name>
-        <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-        <distribution>repo</distribution>
-      </license>
-    </licenses>
-    <scm>
-      <url>git@github.com:ArsCo/scala-preconditions.git</url>
-      <connection>scm:git:git@github.com:ArsCo/scala-preconditions.git</connection>
-    </scm>
-    <developers>
-      <developer>
-        <id>ars</id>
-        <name>Arsen Ibragimov</name>
-        <url>https://github.com/ars-java</url>
-      </developer>
-    </developers>
+    libraryDependencies ++= loggingDependencies ++ testingDependencies,
 
-publishMavenStyle := true
-publishArtifact in Test := false
+    resolvers += DefaultMavenRepository,
+
+    publishTo := {
+      val nexus = "https://oss.sonatype.org/"
+      if (isSnapshot.value)
+        Some("snapshots" at nexus + "content/repositories/snapshots")
+      else
+        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    },
+
+    homepage := Some(url("https://github.com/ArsCo/scala-preconditions")),
+
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/your-account/your-project"),
+        "scm:git@github.com:ArsCo/scala-preconditions.git"
+      )
+    ),
+
+    developers := List(
+      Developer(
+        id    = "ars",
+        name  = "Arsen Ibragimov",
+        email = "ars@ars-co.ru",
+        url   = url("https://github.com/ars-java")
+      )
+    ),
+
+    licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html")),
+
+    pomIncludeRepository := { _ => false },
+
+    publishMavenStyle := true,
+    publishArtifact in Test := false
+  )
+
