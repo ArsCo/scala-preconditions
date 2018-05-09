@@ -1,14 +1,33 @@
+/*
+ * Copyright 2018 Arsen Ibragimov (ars)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ars.precondition
 
 import java.util.regex.Pattern
 
+import ars.precondition.require.bound.{BoundedNumber, Exclusive, Inclusive}
+
 import scala.collection.Iterable
 import scala.math.Numeric
+import scala.util.Try
 import scala.util.matching.Regex
 
 /** Predicates.
   *
-  * @author ars (Arsen Ibragimov)
+  * @author Arsen Ibragimov (ars)
   * @since 0.0.1
   */
 object Predicates {
@@ -17,18 +36,14 @@ object Predicates {
   private final val UuidPattern = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$".r
 
   private def isNumberString(value: String, convert: String => AnyVal) = {
-    try { convert(value); true }
-    catch { case _: NumberFormatException => false }
+
+    Try { convert(value); true }.recover {
+      case _: NumberFormatException => false
+      case _ => false
+    }.get
   }
 
-  object BoundTypes extends Enumeration {
-    type BoundType = Value
-
-    val Inclusive = Value
-    val Exclusive = Value
-  }
-
-  def isNotNull[T <: AnyRef](value: T): Boolean = value != null
+  def isNotNull[T](value: T): Boolean = value != null
   def isNotBlank(value: String): Boolean = isNotNull(value) && value.trim.nonEmpty
   def isNotBlank[T](value: Iterable[T]): Boolean = isNotNull(value) && value.nonEmpty
   def isMatchPattern(value: String, pattern: Pattern): Boolean = pattern.matcher(value).matches()
@@ -54,34 +69,32 @@ object Predicates {
     isSizeFrom(value, from) && isSizeUntil(value, until)
   }
 
-
-  def isNumber[@specialized T: Numeric](value: T, number: T): Boolean = {
+  def isEqualNumber[@specialized T: Numeric](value: T, number: T): Boolean = {
     val n = implicitly[Numeric[T]]
-    n.eq(value, number)
+    number == value
   }
 
-  def isNumberFrom[@specialized T: Numeric](value: T)
-                  (leftBound: T, leftBoundType: BoundTypes.BoundType = BoundTypes.Inclusive): Boolean = {
+  def isNumberFrom[@specialized T: Numeric](value: T, leftBound: BoundedNumber[T]): Boolean = {
     val n = implicitly[Numeric[T]]
-    leftBoundType match {
-      case BoundTypes.Exclusive => n.lt(leftBound, value)
-      case BoundTypes.Inclusive => n.lteq(leftBound,value)
+    leftBound match {
+      case Exclusive(v) => n.lt(v, value)
+      case Inclusive(v) => n.lteq(v,value)
+      case _ => throw new RuntimeException("Unknown bound type.")
     }
   }
 
-  def isNumberUntil[@specialized T: Numeric](value: T)
-                   (rightBound: T, rightBoundType: BoundTypes.BoundType = BoundTypes.Exclusive): Boolean = {
+  def isNumberUntil[@specialized T: Numeric](value: T, rightBound: BoundedNumber[T]): Boolean = {
     val n = implicitly[Numeric[T]]
-    rightBoundType match {
-      case BoundTypes.Exclusive => n.lt(value, rightBound)
-      case BoundTypes.Inclusive => n.lteq(value, rightBound)
+    rightBound match {
+      case Exclusive(v) => n.lt(value, v)
+      case Inclusive (v)=> n.lteq(value, v)
+      case _ => throw new RuntimeException("Unknown bound type.")
     }
   }
 
   def isNumberInBounds[@specialized T: Numeric](value: T)
-                      (leftBound: T, leftBoundType: BoundTypes.BoundType = BoundTypes.Inclusive)
-                      (rightBound: T, rightBoundType: BoundTypes.BoundType = BoundTypes.Exclusive): Boolean = {
-    isNumberFrom(value)(leftBound, leftBoundType) && isNumberUntil(value)(rightBound, rightBoundType)
+                      (leftBound: BoundedNumber[T], rightBound: BoundedNumber[T]): Boolean = {
+    isNumberFrom(value, leftBound) && isNumberUntil(value, rightBound)
   }
 
   def isOnlyOneOf[T](value: Iterable[T], seq: Iterable[T], allowDups: Boolean = false): Boolean = {
@@ -112,5 +125,4 @@ object Predicates {
 
   def isCorrectEmail(email: String): Boolean = isMatchPattern(email, EmailPattern)
   def isCorrectUuid(guid: String): Boolean = isMatchPattern(guid, UuidPattern)
-
 }

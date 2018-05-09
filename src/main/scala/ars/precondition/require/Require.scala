@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 
-package ars.precondition
+package ars.precondition.require
 
-import org.scalatest.Suites
-
-/** All tests for package `ars.precondition`.
+/** Default implementation containing all `requireXXX` methods.
   *
   * @author Arsen Ibragimov (ars)
-  * @since 0.0.1
+  * @since 0.0.4
   */
-class AllPackageTests extends Suites(
-  new MessageBuilderTest,
-  new PredicatesTest,
-  new RequireUtilsTest,
+class Require extends RequireCore
+  with RequireAll with RequireAllSpecific
+  with RequireAny
+  with RequireIterable
+  with RequireNumeric with RequireNumericRange
+  with RequireOptional with RequireSize
+  with RequireString with RequireStringFormat with RequireStringNumeric
 
-  new implicits.AllPackageTests,
+object Require {
 
-  new require.AllPackageTests,
-  new require.bound.AllPackageTests
-)
+  /**
+    * Default instance, containing all `requireXXX` methods.
+    *
+    * To use import its methods:
+    * {{{
+    *   import ars.precondition.require.Require.Default._
+    * }}}
+    */
+  final val Default = new Require
+}

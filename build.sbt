@@ -1,33 +1,36 @@
-import sbt.Keys.{developers, libraryDependencies, scmInfo}
-import sbt.url
+val ProjectName = "scala-preconditions"
 
 lazy val commonSettings = Seq(
   organization := "ru.ars-co",
-  version := "0.0.3", // + "-SNAPSHOT"
-  name := "scala-preconditions"
+  version := "0.1.0",
+  name := ProjectName,
+  isSnapshot := false
 )
+
+lazy val coverageSettings = {
+  import org.scoverage.coveralls.Imports.CoverallsKeys._
+  Seq(
+    coverallsTokenFile := sys.env.get("COVERALLS_TOKEN_DIRS").map(dir => s"$dir/$ProjectName.token")
+  )
+}
 
 lazy val loggingDependencies = Seq(
   "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
-  "org.slf4j" % "jcl-over-slf4j" % "1.7.21",
-  "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.7",
-  "org.apache.logging.log4j" % "log4j-api" % "2.7",
-  "org.apache.logging.log4j" % "log4j-core" % "2.7"
+  "org.slf4j" % "jcl-over-slf4j" % "1.7.21"
 )
 
 lazy val testingDependencies = Seq(
-  "org.scalactic" %% "scalactic" % "3.0.0" % Test,
   "org.scalatest" %% "scalatest" % "3.0.0" % Test
 )
 
 
-lazy val root = (project in file("."))
+lazy val `scala-preconditions` = (project in file("."))
   .settings(
     commonSettings,
+    coverageSettings,
 
     scalaVersion := "2.11.8",
     crossScalaVersions := Seq("2.11.8", "2.12.4"),
-    javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
 
     libraryDependencies ++= loggingDependencies ++ testingDependencies,
 
@@ -35,18 +38,18 @@ lazy val root = (project in file("."))
 
     publishTo := {
       val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value)
+      if (isSnapshot.value || version.value.contains("-SNAPSHOT"))
         Some("snapshots" at nexus + "content/repositories/snapshots")
       else
         Some("releases"  at nexus + "service/local/staging/deploy/maven2")
     },
 
-    homepage := Some(url("https://github.com/ArsCo/scala-preconditions")),
+    homepage := Some(url(s"https://github.com/ArsCo/${ProjectName}")),
 
     scmInfo := Some(
       ScmInfo(
-        url("https://github.com/your-account/your-project"),
-        "scm:git@github.com:ArsCo/scala-preconditions.git"
+        url(s"https://github.com/ArsCo/${ProjectName}"),
+        s"scm:git@github.com:ArsCo/${ProjectName}.git"
       )
     ),
 
@@ -66,4 +69,3 @@ lazy val root = (project in file("."))
     publishMavenStyle := true,
     publishArtifact in Test := false
   )
-

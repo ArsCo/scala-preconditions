@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package ars.precondition
+package ars.precondition.require.bound
 
-import org.scalatest.Suites
-
-/** All tests for package `ars.precondition`.
+/** Base class for bounded number values.
   *
   * @author Arsen Ibragimov (ars)
-  * @since 0.0.1
+  * @since 0.0.4
   */
-class AllPackageTests extends Suites(
-  new MessageBuilderTest,
-  new PredicatesTest,
-  new RequireUtilsTest,
+sealed abstract class BoundedNumber[T: Numeric](val value: T)
 
-  new implicits.AllPackageTests,
+/** Inclusive bound. */
+final case class Inclusive[T: Numeric](override val value: T) extends BoundedNumber(value)
 
-  new require.AllPackageTests,
-  new require.bound.AllPackageTests
-)
+/** Exclusive bound. */
+final case class Exclusive[T: Numeric](override val value: T) extends BoundedNumber(value)

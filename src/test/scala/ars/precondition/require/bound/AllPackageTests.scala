@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package ars.precondition
+package ars.precondition.require.bound
 
 import org.scalatest.Suites
 
-/** All tests for package `ars.precondition`.
+/** All tests for package `ars.precondition.require.bound`.
   *
   * @author Arsen Ibragimov (ars)
-  * @since 0.0.1
+  * @since 0.0.4
   */
 class AllPackageTests extends Suites(
-  new MessageBuilderTest,
-  new PredicatesTest,
-  new RequireUtilsTest,
-
-  new implicits.AllPackageTests,
-
-  new require.AllPackageTests,
-  new require.bound.AllPackageTests
+  new RichNumberBoundTest,
+  new BoundedNumberTest
 )

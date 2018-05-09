@@ -14,22 +14,48 @@
  * limitations under the License.
  */
 
-package ars.precondition
+package ars.precondition.require
 
-import org.scalatest.Suites
+import ars.precondition.MessageBuilder._
+import ars.precondition.Predicates._
 
-/** All tests for package `ars.precondition`.
+/** `requireXXX` methods for [[Any]] values.
   *
   * @author Arsen Ibragimov (ars)
   * @since 0.0.1
   */
-class AllPackageTests extends Suites(
-  new MessageBuilderTest,
-  new PredicatesTest,
-  new RequireUtilsTest,
+trait RequireAny extends RequireCore {
 
-  new implicits.AllPackageTests,
+  /**
+    * Tests that `value` isn't `null`, and otherwise throws [[RequireCore.exception()]].
+    *
+    * @param value the value to test
+    * @param name the name to include in the failure message (must be non-null)
+    */
+  def requireNotNull(value: Any, name: String = NoNameParameter): Unit = {
+    require(isNotNull(value), notNull(name))
+  }
+}
 
-  new require.AllPackageTests,
-  new require.bound.AllPackageTests
-)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
