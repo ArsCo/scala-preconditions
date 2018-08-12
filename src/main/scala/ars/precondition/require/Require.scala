@@ -24,7 +24,7 @@ package ars.precondition.require
 class Require extends RequireCore
   with RequireAll with RequireAllSpecific
   with RequireAny
-  with RequireIterable
+  with RequireIterable with RequireUnique
   with RequireNumeric with RequireNumericRange
   with RequireOptional with RequireSize
   with RequireString with RequireStringFormat with RequireStringNumeric

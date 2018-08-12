@@ -36,6 +36,7 @@ class AllPackageTests extends Suites(
   new RequireCoreTest,
   new RequireInternalTest,
   new RequireIterableTest,
+  new RequireUniqueTest,
   new RequireNumericRangeTest,
   new RequireNumericTest,
   new RequireOptionalTest,

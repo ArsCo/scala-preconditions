@@ -22,7 +22,7 @@ val `Scala 2.12 version` = "2.12.4"
 
 lazy val commonSettings = Seq(
   organization := ArsCo,
-  version := "0.1.1",
+  version := "0.1.2",
   name := ProjectName,
   isSnapshot := false
 )

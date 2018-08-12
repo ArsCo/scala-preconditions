@@ -136,6 +136,14 @@ object MessageBuilder {
 
   def mustBeCorrectUuid(name: String, value: String): String = mustBe(name, "correct UUID", value)
 
+  def nonUniqueMessage[T, F](name: String, fieldName: String, nonUnique: (F, Iterable[T])): String = {
+    val (key, vals) = nonUnique
+    val num = vals.size
+    val s = vals.map(v => s"'$v'").mkString(", ")
+
+    s"Each element of `$name` must have unique value of `$fieldName` but there're $num non-unique for '$key': $s."
+  }
+
   private[precondition] def iterableToPrettyString[T](value: Iterable[T]): String = {
     val values = value.toSeq.map(_.toString).mkString(", ")
     s"[$values]"

@@ -45,4 +45,13 @@ package object require {
     * @tparam T the type of element
     */
   type RequireElementFunction[T] = (T, String, Int) => Unit
+
+
+  /**
+    * Extracts field value of type [[Field]] from instance of [[Type]].
+    *
+    * @tparam Type the instance type
+    * @tparam Field the field type
+    */
+  type FieldExtractor[Type, Field] = Type => Field
 }

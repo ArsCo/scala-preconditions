@@ -291,6 +291,24 @@ class MessageBuilderTest extends AbstractBaseTest {
     }
   }
 
+  case class Test(v: String)
+
+  "nonUniqueMessage()" must "produce correct string value" in {
+    val n = "param name"
+    val f = "field name"
+    val c = 2
+    val k = "keyBBB"
+    val seq = Seq(Test("val"), Test("val"))
+    val ss = seq.map(s => s"'$s'").mkString(", ")
+
+    assertResult(
+      s"Each element of `$n` must have unique value of `$f` but there're $c non-unique for '$k': $ss."
+    ) {
+      MessageBuilder.nonUniqueMessage(n, f, (k, seq))
+
+    }
+  }
+
   "iterableToPrettyString()" must "produce correct string value for Iterable[T]" in {
     assertResult("[33, 44, 55]") {
       MessageBuilder.iterableToPrettyString(Seq(33, 44,55))
