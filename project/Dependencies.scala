@@ -22,7 +22,7 @@ import sbt._
   * @since 0.0.1
   */
 object Dependencies {
-  val ScalaLoggingVersion = "3.5.0"
+  val ScalaLoggingVersion = "3.7.2"
   val ScalaTestVersion = "3.0.0"
 
   val LogbackVersion = "1.2.3"
