@@ -119,9 +119,46 @@ class RequireStringFormatTest extends AbstractBaseTest with BeforeAndAfterEach {
       requireUuid(null, fieldName)
     }
 
-    requireUuid("837ab383-6ab4-9273-38c3-274abc742932", fieldName) // lazy evaluation
+    requireUuid("837ab383-6ab4-9273-38c3-274abc742932", null) // lazy evaluation of 2-nd arg
     intercept[RuntimeException] {
       requireUuid("837ab383-6ab4-9273-38c3-274abc742932d", null)
+    }
+  }
+
+  val IncorrectURL = "//www.correct.url...com"
+
+  "requireUrl" must "throws IAF if `uuid` is incorrect" in {
+    val r = requireStringFormat
+    import r._
+
+    intercept[IllegalArgumentException] {
+      requireUrl("", fieldName)
+    }
+
+    intercept[IllegalArgumentException] {
+      requireUrl(IncorrectURL, fieldName)
+    }
+  }
+
+  it must "do nothing otherwise" in {
+    val r = requireStringFormat
+    import r._
+
+    requireUrl("http://www.correct.url.com/path?param=out")
+    requireUrl("http://www.correct.url.com/path?param=out", fieldName)
+  }
+
+  it must "validate args" in {
+    val r = requireStringFormat
+    import r._
+
+    intercept[RuntimeException] {
+      requireUrl(null, fieldName)
+    }
+
+    requireUrl("http://www.correct.url.com/path?param=out", null) // lazy evaluation of 2-nd arg
+    intercept[RuntimeException] {
+      requireUrl(IncorrectURL, null)
     }
   }
 }

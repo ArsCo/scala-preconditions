@@ -25,7 +25,7 @@ class Require extends RequireCore
   with RequireAll with RequireAllSpecific
   with RequireAny
   with RequireIterable with RequireUnique
-  with RequireNumeric with RequireNumericRange
+  with RequireNumeric with RequireNumericRange with RequireNumericSpecific
   with RequireOptional with RequireSize
   with RequireString with RequireStringFormat with RequireStringNumeric
 
