@@ -67,6 +67,8 @@ The library provides predicates and precondition checkers to test that
     - `requireNumberFrom()`
     - `requireNumberUntil()`
     - `requireNumberInRange()`
+- numeric specific ranges
+    - `requirePort()`
 - `Option[T]` value meets the requirements (trait `RequireOptional`)
     - `optional()`
     - `optionalPredicate()`
