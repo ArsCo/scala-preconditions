@@ -16,6 +16,7 @@
 
 package ars.precondition
 
+import java.net.URL
 import java.util.regex.Pattern
 
 import ars.precondition.require.bound.{BoundedNumber, Exclusive, Inclusive}
@@ -125,4 +126,6 @@ object Predicates {
 
   def isCorrectEmail(email: String): Boolean = isMatchPattern(email, EmailPattern)
   def isCorrectUuid(guid: String): Boolean = isMatchPattern(guid, UuidPattern)
+
+  def isCorrectUrl(url: String): Boolean = Try { new URL(url) }.isSuccess
 }

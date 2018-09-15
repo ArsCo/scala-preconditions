@@ -136,6 +136,8 @@ object MessageBuilder {
 
   def mustBeCorrectUuid(name: String, value: String): String = mustBe(name, "correct UUID", value)
 
+  def mustBeCorrectUrl(name: String, value: String): String = mustBe(name, "correct URL", value)
+
   def nonUniqueMessage[T, F](name: String, fieldName: String, nonUnique: (F, Iterable[T])): String = {
     val (key, vals) = nonUnique
     val num = vals.size

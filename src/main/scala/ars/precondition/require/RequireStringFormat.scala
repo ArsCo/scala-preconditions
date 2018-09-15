@@ -16,8 +16,8 @@
 
 package ars.precondition.require
 
-import ars.precondition.MessageBuilder.{NoNameParameter, mustBeCorrectEmail, mustBeCorrectUuid}
-import ars.precondition.Predicates.{isCorrectEmail, isCorrectUuid}
+import ars.precondition.MessageBuilder.{NoNameParameter, mustBeCorrectEmail, mustBeCorrectUuid, mustBeCorrectUrl}
+import ars.precondition.Predicates.{isCorrectEmail, isCorrectUuid, isCorrectUrl}
 
 /** `requireXXX` methods for formatted string values.
   *
@@ -50,5 +50,18 @@ trait RequireStringFormat extends RequireCore {
     */
   @inline def requireUuid(uuid: String, name: String = NoNameParameter): Unit = {
     require(isCorrectUuid(uuid),  mustBeCorrectUuid(name, uuid))
+  }
+
+  /**
+    * Tests that string `url` is a correct URL,
+    * and otherwise throws [[RequireCore.exception()]].
+    *
+    * @param url the testing URL string (must be non-null)
+    * @param name the name to include in the failure message (must be non-null)
+    *
+    * @throws RuntimeException if test fails
+    */
+  @inline def requireUrl(url: String, name: String = NoNameParameter): Unit = {
+    require(isCorrectUrl(url), mustBeCorrectUrl(name, url))
   }
 }

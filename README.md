@@ -67,7 +67,7 @@ The library provides predicates and precondition checkers to test that
     - `requireNumberFrom()`
     - `requireNumberUntil()`
     - `requireNumberInRange()`
-- `Option[T]` value meets the equirements (trait `RequireOptional`)
+- `Option[T]` value meets the requirements (trait `RequireOptional`)
     - `optional()`
     - `optionalPredicate()`
 - size of `Iterable[T]` in range (trait `RequireSize`)
@@ -81,6 +81,7 @@ The library provides predicates and precondition checkers to test that
 - `String` is correct `UUID` or email (trait `RequireStringFormat`)
     - `requireEmail()`
     - `requireUuid()`
+    - `requireUrl()`
 - `String` contains correct numeric value (trait `RequireStringNumeric`)
     - `requireByte()`
     - `requireShort()`
@@ -156,13 +157,13 @@ To customize exception type
 
 __Example:__
 ```scala
-class RequireMyException extends Require {
+class RequireWithMyException extends Require {
   override def exception(message: String, cause: Option[RuntimeException] = None): RuntimeException = {
       //...
   }
 }
 
-final val MyRequire = new RequireNew
+final val MyRequire = new RequireWithMyException
 
 import MyRequire._
 
