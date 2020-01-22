@@ -7,7 +7,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/ArsCo/scala-preconditions/badge.svg?branch=master)](https://coveralls.io/github/ArsCo/scala-preconditions?branch=master)
 [![Licence](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))
 [![Latest release](https://img.shields.io/github/release/ArsCo/scala-preconditions/all.svg)](https://github.com/ArsCo/scala-preconditions/releases/latest)
-[![Code quality](https://img.shields.io/codacy/40b219086c594dc7b67c0698363f56ed.svg)](https://www.codacy.com/app/ArsCo/scala-preconditions)
 [![Gitterchat](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/ars-co/scala-preconditions)
 
 Scala library that provides extendable API to check method preconditions.
