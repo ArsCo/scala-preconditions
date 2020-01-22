@@ -88,7 +88,7 @@ object Predicates {
     val n = implicitly[Numeric[T]]
     rightBound match {
       case Exclusive(v) => n.lt(value, v)
-      case Inclusive (v)=> n.lteq(value, v)
+      case Inclusive(v) => n.lteq(value, v)
       case _ => throw new RuntimeException("Unknown bound type.")
     }
   }

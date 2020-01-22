@@ -57,7 +57,7 @@ package object implicits {
     *
     * @return the new instance of [[RequireElementFunction]]
     */
-  @inline implicit def func2elem[T](f: RequireFunction[T]): RequireElementFunction[T] = {
+  @inline implicit def func2elem[T](implicit f: RequireFunction[T]): RequireElementFunction[T] = {
     (element: T, name: String, index: Int) => f(element, s"$name($index)")
   }
 }
