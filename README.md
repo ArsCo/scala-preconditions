@@ -1,5 +1,6 @@
 # scala-preconditions
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3524c436ed7e41f2a3f891c7882bacca)](https://app.codacy.com/manual/ars-java/scala-preconditions?utm_source=github.com&utm_medium=referral&utm_content=ArsCo/scala-preconditions&utm_campaign=Badge_Grade_Dashboard)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ru.ars-co/scala-preconditions_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/ru.ars-co/scala-preconditions_2.11) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ru.ars-co/scala-preconditions_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/ru.ars-co/scala-preconditions_2.12)
 
