@@ -173,4 +173,4 @@ import MyRequire._
 
 # Copyright
 
-Copyright 2018 Arsen Ibragimov (ars)
+Copyright 2018-2020 Arsen Ibragimov (ars)
