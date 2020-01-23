@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package ars.precondition.implicits
+package ars.precondition
 
-import ars.precondition.AbstractBaseTest
 import ars.precondition.require.bound.RichNumberBound
+import ars.precondition.implicits._
 
 /** Tests for `implicits` package object.
   *

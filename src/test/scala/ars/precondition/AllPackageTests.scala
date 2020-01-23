@@ -28,7 +28,7 @@ class AllPackageTests extends Suites(
   new PredicatesTest,
   new RequireUtilsTest,
 
-  new implicits.AllPackageTests,
+  new implicitsTest,
 
   new require.AllPackageTests,
   new require.bound.AllPackageTests

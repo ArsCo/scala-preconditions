@@ -18,10 +18,9 @@ package ars.precondition
 
 import java.util.regex.Pattern
 
-import ars.precondition.require.bound.RichNumberBound
 import ars.precondition.require.{RequireAll, RequireAny, RequireElementFunction, RequireFunction}
+import ars.precondition.require.bound.RichNumberBound
 
-import scala.language.implicitConversions
 import scala.math.Numeric
 import scala.util.matching.Regex
 
@@ -31,7 +30,7 @@ import scala.util.matching.Regex
   * @author Arsen Ibragimov (ars)
   * @since 0.0.4
   */
-package object implicits {
+object implicits {
 
   @inline implicit def num2richBound[T : Numeric](value: T): RichNumberBound[T] = new RichNumberBound[T](value)
 
@@ -45,19 +44,38 @@ package object implicits {
   @inline implicit def pattern2regexp(pattern: Pattern): Regex = pattern.pattern().r
 
   /**
+    * Converts function of type `(T, String) => Unit` into [[RequireFunction]].
+    *
+    * @param func the function (must be non-null)
+    *
+    * @tparam T the type of value
+    *
+    * @return the new instance of [[RequireFunction]]
+    */
+  @inline implicit def func2recFunc[T](func: (T, String) => Unit): RequireFunction[T] = func
+
+  /**
     * Wraps [[RequireFunction]] (for example [[[RequireUtils.requireNotBlank(value:String*]]]
     * or [[RequireAny#requireNotNull]]) to [[RequireElementFunction]] to use with
     * [[RequireAll#requireAll]] method.
     *
     * Default implementation concatenates name and index in string `name(index)`.
     *
-    * @param f the function to translate
+    * @param func the function to translate
     *
     * @tparam T the type of iterable elements
     *
     * @return the new instance of [[RequireElementFunction]]
     */
-  @inline implicit def func2elem[T](implicit f: RequireFunction[T]): RequireElementFunction[T] = {
-    (element: T, name: String, index: Int) => f(element, s"$name($index)")
+  @inline implicit class ImplicitRequireElementFunction[T](func: RequireFunction[T]) extends RequireElementFunction[T] {
+    override def apply(v1: T, v2: String, v3: Int): Unit = func(v1, v2)
   }
+
+
+
+
+
+
+
 }
+
