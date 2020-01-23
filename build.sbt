@@ -17,12 +17,12 @@
 val ArsCo = "ru.ars-co"
 val ProjectName = "scala-preconditions"
 
-val `Scala 2.11 version` = "2.11.8"
-val `Scala 2.12 version` = "2.12.4"
+val `Scala 2.11 version` = "2.11.12"
+val `Scala 2.12 version` = "2.12.10"
 
 lazy val commonSettings = Seq(
   organization := ArsCo,
-  version := "0.1.2",
+  version := "0.1.3",
   name := ProjectName,
   isSnapshot := false
 )
